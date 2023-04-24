@@ -9,7 +9,7 @@ class card extends HTMLElement{
         this.foto = null
         this.nome = 'Titulo do card'
         this.description = 'descrição do produto'
-        this.preco = 'preCo'
+        this.preco = 'Preço do produto'
     }
 
     static get observedAttributes(){
