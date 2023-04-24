@@ -1,43 +1,172 @@
-'use strict'
+'use stric'
 
 import { produtos } from "./produtos.js"
 
+class card extends HTMLElement{
+    constructor(){
+        super()
+        this.shadow = this.attachShadow({mode:'open'})
+        this.foto = null
+        this.nome = 'Titulo do card'
+        this.description = 'descrição do produto'
+        this.preco = 'preCo'
+    }
 
-const criaCard = (produto) => {
-    const card = document.createElement('div')
-    card.classList.add('card')
+    static get observedAttributes(){
+        return[ 'foto' ,'nome','description','preco']
+    }
 
-    const foto = document.createElement('img')
-    foto.classList.add('card_image')
-    foto.src = `./img/${produto.image}`
+    attributeChangedCallback(nameAttr, oldValue, newValue){
+        this[nameAttr] = newValue
+    }
 
-    const titulo = document.createElement('h5')
-    titulo.classList.add('card__title')
-    titulo.textContent = produto.name
+    connectedCallback(){
+        this.shadow.appendChild(this.component())
+        this.shadow.appendChild(this.styles())
+    }
+
+    styles(){
+        const css = document.createElement('style')
+        css.textContent = 
+        `
+        .container{
+            display: grid;
+            grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+            gap: 16px;
+            padding: 16px;
+        }
+        .card{
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            border: 1-x solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0px 0px 8px #0006;
+            padding: 16px;
+            cursor: pointer;
+        
+        }
+        .card:hover{
+            box-shadow: 0px 0px 8px #00f6;
+        }
+        .card__image{
+            width: 200px;
+            height: 200px;
+            object-fit: contain;
+        
+        }
+        .card__title{
+            font-size: 1.5rem;
+        }
+        .card__description{
+            font-size: 1rem;
+        }
+        .card__price{
+            width: 100%;
+            font-size: 1.5rem;
+            font-weight: 900;
+        }
+        .footer__text{
+            text-align: center;
+        }
+         
+        `
+        return css
+    }
+
+
+    component() {
     
-    const descricao = document.createElement('p')
-    descricao.classList.add('card__description')
-    descricao.textContent = produto.description
-
-    const preco = document.createElement('span')
-    preco.classList.add('card__price')
-    preco.textContent = `R$ ${produto.price}`
-
-
-   card.append(foto,titulo,descricao,preco)
+        const card = document.createElement('div')
+        card.classList.add('card')
     
-
-    return card
+        const foto = document.createElement('img')
+        foto.classList.add('card__image')
+        foto.src = `${this.foto}`
     
+        const titulo = document.createElement('h5')
+        titulo.classList.add('card__title')
+        titulo.textContent = this.nome
+    
+        const descricao = document.createElement('p')
+        descricao.classList.add('card__description')
+        descricao.textContent = this.description
+    
+        const preco = document.createElement('spam')
+        preco.classList.add('card__price')
+        preco.textContent = `R$ ${this.preco}`
+    
+        card.append(foto, titulo, descricao, preco)
+    
+        return card
+    } 
 }
 
-const carregarProdutos = () => {
-    const container = document.getElementById('container')
-    const cards = produtos.map(criaCard)
+customElements.define('card-produto', card)
 
-    container.replaceChildren(...cards)
-}
-carregarProdutos()
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// 'use strict'
+
+// import { produtos } from "./produtos.js"
+
+
+// const criaCard = (produto) => {
+//     const card = document.createElement('div')
+//     card.classList.add('card')
+
+//     const foto = document.createElement('img')
+//     foto.classList.add('card_image')
+//     foto.src = `./img/${produto.image}`
+
+//     const titulo = document.createElement('h5')
+//     titulo.classList.add('card__title')
+//     titulo.textContent = produto.name
+    
+//     const descricao = document.createElement('p')
+//     descricao.classList.add('card__description')
+//     descricao.textContent = produto.description
+
+//     const preco = document.createElement('span')
+//     preco.classList.add('card__price')
+//     preco.textContent = `R$ ${produto.price}`
+
+
+//    card.append(foto,titulo,descricao,preco)
+    
+
+//     return card
+    
+// }
+
+// const carregarProdutos = () => {
+//     const container = document.getElementById('container')
+//     const cards = produtos.map(criaCard)
+
+//     container.replaceChildren(...cards)
+// }
+// carregarProdutos()
 
 
 
